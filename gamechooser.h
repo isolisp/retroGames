@@ -5,22 +5,22 @@
 #include <snakegame.h>
 
 namespace Ui {
-class MainWindow;
+    class GameChooser;
 }
 
-class MainWindow : public QMainWindow
+class GameChooser : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit GameChooser(QWidget *parent = 0);
+    ~GameChooser();
 
 private slots:
     void on_snake_b_clicked();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::GameChooser *ui;
 
     SnakeGame *snakegame = Q_NULLPTR;
 

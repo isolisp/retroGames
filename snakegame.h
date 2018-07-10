@@ -1,25 +1,25 @@
 #ifndef SNAKEGAME_H
 #define SNAKEGAME_H
 
-#include <QDialog>
+#include <QWidget>
+#include <QObject>
 
 namespace Ui {
-class SnakeGame;
+    class SnakeGame;
 }
 
-class SnakeGame : public QDialog
+class SnakeGame : public QWidget
 {
     Q_OBJECT
 
+private:
+    void tableInit();
 public:
-    explicit SnakeGame(QWidget *parent = 0);
+    explicit SnakeGame(QWidget *parent = nullptr);
+    Ui::SnakeGame *ui;
     ~SnakeGame();
-
 private slots:
     void on_back_b_clicked();
-
-private:
-    Ui::SnakeGame *ui;
 };
 
 #endif // SNAKEGAME_H
