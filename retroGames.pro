@@ -26,11 +26,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     gamechooser.cpp \
-    snakegame.cpp
+    snakegame.cpp \
+    snakegraphics.cpp \
+    snaketimer.cpp
 
 HEADERS += \
     gamechooser.h \
-    snakegame.h
+    snakegame.h \
+    snakegraphics.h \
+    snaketimer.h
 
 FORMS += \
         gamechooser.ui \

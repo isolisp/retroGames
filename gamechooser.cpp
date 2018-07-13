@@ -1,22 +1,15 @@
 #include <gamechooser.h>
 #include "ui_gamechooser.h"
 
-
-GameChooser::GameChooser(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::GameChooser)
-{
-    ui->setupUi(this);
+GameChooser::GameChooser(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::GameChooser) {
+  ui->setupUi(this);
 }
 
-GameChooser::~GameChooser()
-{
-    delete ui;
-}
+GameChooser::~GameChooser() { delete ui; }
 
-void GameChooser::on_snake_b_clicked()
-{
-    snakegame = new SnakeGame();
-    snakegame->setFixedSize(800,600);
-    snakegame->show();
+void GameChooser::on_snake_b_clicked() {
+  snakegame = new SnakeGame();
+  snakegame->setFixedSize(800, 600);
+  snakegame->show();
 }
