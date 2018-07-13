@@ -17,14 +17,14 @@ class SnakeGame : public QWidget
 private:
   void tableInit();
   SnakeGraphics *graphix = Q_NULLPTR;
-  QList<QPoint> cellsSelected;
   void setCellSelected(QPoint cell, bool selected);
 
 public:
     explicit SnakeGame(QWidget *parent = nullptr);
     Ui::SnakeGame *ui;
     ~SnakeGame();
-    void setSnake(QList<QPoint> list);
+    void setSnake(QPoint* list);
+    QList<QPoint>* cellsSelected;
 
 
 private slots:

@@ -1,9 +1,9 @@
 #ifndef SNAKEGRAPHICS_H
 #define SNAKEGRAPHICS_H
 
-#include <QObject>
+#include <QWidget>
 
-class SnakeGraphics : public QObject
+class SnakeGraphics : public QWidget
 {
   Q_OBJECT
 

@@ -8,7 +8,7 @@
 SnakeGame::SnakeGame(QWidget *parent) : QWidget(parent), ui(new Ui::SnakeGame) {
   ui->setupUi(this);
   tableInit();
-  //graphix = new SnakeGraphics(this);
+  graphix = new SnakeGraphics(this);
 }
 
 SnakeGame::~SnakeGame() { delete ui; }
@@ -34,8 +34,9 @@ void SnakeGame::tableInit() {
   this->ui->fieldsTable->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
   // Fit the QTable with items
-  for (i = 0; i < square_w; i++) {
-    for (j = 0; i < square_h; i++) {
+
+  for (i = 0; i < square_h; i++){
+    for (j = 0; j < square_w; j++){
       this->ui->fieldsTable->setItem(i, j, new QTableWidgetItem(0));
     }
   }
@@ -45,12 +46,12 @@ void SnakeGame::tableInit() {
   this->ui->fieldsTable->setEnabled(false);
 }
 
-void SnakeGame::setSnake(QList<QPoint> list) {
-  cellsSelected = list;
-  QListIterator<QPoint> iter(list);
-  setCellSelected(list.last(), false);
-  while(iter.hasNext()){
-    setCellSelected(iter.next(), true);
+void SnakeGame::setSnake(QPoint* list) {
+  qDebug() << list[0] << list[1];
+  int i = 0;
+  while(list[i].rx() != -1){
+    setCellSelected(list[i], true);
+    i++;
   }
 }
 
