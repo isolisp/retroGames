@@ -17,6 +17,6 @@ GameChooser::~GameChooser()
 void GameChooser::on_snake_b_clicked()
 {
     snakegame = new SnakeGame();
-    snakegame->setGeometry(this->x(), this->y(), 800, 600);
+    snakegame->setFixedSize(800,600);
     snakegame->show();
 }
