@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <snakegame.h>
+#include <snakegraphics.h>
 
 namespace Ui {
     class GameChooser;
@@ -21,8 +22,8 @@ private slots:
 
 private:
     Ui::GameChooser *ui;
-
     SnakeGame *snakegame = Q_NULLPTR;
+    SnakeGraphics *snakeGraphics = Q_NULLPTR;
 
 };
 

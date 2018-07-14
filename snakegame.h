@@ -1,34 +1,34 @@
 #ifndef SNAKEGAME_H
 #define SNAKEGAME_H
 
-#include <QWidget>
 #include <QObject>
-
-#include "snakegraphics.h"
+#include <QWidget>
 
 namespace Ui {
-    class SnakeGame;
+class SnakeGame;
 }
 
-class SnakeGame : public QWidget
-{
-    Q_OBJECT
+class SnakeGame : public QWidget {
+  Q_OBJECT
 
-private:
+ private:
   void tableInit();
-  SnakeGraphics *graphix = Q_NULLPTR;
+  int square_w, square_h;
+  QPoint feed;
+
+ public:
+  explicit SnakeGame(QWidget *parent = nullptr);
+  Ui::SnakeGame *ui;
+  ~SnakeGame();
+  void setSnake(QPoint *list);
+  QList<QPoint> getSnake();
   void setCellSelected(QPoint cell, bool selected);
+  void setFeed(QPoint point);
+  QPoint getFeed();
+  QPoint getScreenDimensions();
 
-public:
-    explicit SnakeGame(QWidget *parent = nullptr);
-    Ui::SnakeGame *ui;
-    ~SnakeGame();
-    void setSnake(QPoint* list);
-    QList<QPoint>* cellsSelected;
-
-
-private slots:
-    void on_back_b_clicked();
+ private slots:
+  void on_back_b_clicked();
 };
 
-#endif // SNAKEGAME_H
+#endif  // SNAKEGAME_H

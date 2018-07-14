@@ -10,6 +10,7 @@ GameChooser::~GameChooser() { delete ui; }
 
 void GameChooser::on_snake_b_clicked() {
   snakegame = new SnakeGame();
+  snakeGraphics = new SnakeGraphics(snakegame);
   snakegame->setFixedSize(800, 600);
   snakegame->show();
 }
