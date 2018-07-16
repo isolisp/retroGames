@@ -11,9 +11,6 @@ SnakeGame::SnakeGame(QWidget* parent) : QWidget(parent), ui(new Ui::SnakeGame) {
   tableInit();
   QPoint points[40];
 
-  setCellSelected(QPoint(0,0), true);
-  setCellSelected(QPoint(0,1), true);
-
 }
 
 SnakeGame::~SnakeGame() { delete ui; }
