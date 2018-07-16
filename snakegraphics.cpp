@@ -1,27 +1,49 @@
 #include "snakegraphics.h"
-#include "snakegame.h"
 #include <QRandomGenerator>
+#include "snakegame.h"
 
 #define DIM 40
+#define X_POS 0
+#define Y_POS 1
+#define X_DIR 2
+#define Y_DIR 3
 
 #include <qdebug.h>
 
-SnakeGraphics::SnakeGraphics(QWidget* parent) : QWidget(parent) {
-  pSnakeGame = qobject_cast<SnakeGame*>(parent);
+Vertix::Vertix(QWidget *parent, int x, int y, QString dir) {
+  this->x = x;
+  this->y = y;
+  this->dir = dir;
+}
+
+SnakeCell::SnakeCell(QWidget *parent, int pos_x, int pos_y, QString dir) {
+  this->x = pos_x;
+  this->y = pos_y;
+  this->dir = dir;
+}
+
+QList<QVariant> SnakeCell::getValues() {
+  return QList<QVariant>() << this->x << this->y << this->dir;
+}
+
+SnakeCell::~SnakeCell() { delete this; }
+
+void SnakeCell::applyNewValues(int delta_x, int delta_y) {
+  this->x = this->x + delta_x;
+  this->y = this->y + delta_y;
+}
+
+void SnakeCell::changeDirection(QString dir) { this->dir = dir; }
+
+SnakeGraphics::SnakeGraphics(QWidget *parent) : QWidget(parent) {
+  pSnakeGame = qobject_cast<SnakeGame *>(parent);
   timer = new SnakeTimer(this);
   timer->startTimer();
-  QPoint points[40];
   QObject::connect(timer, SIGNAL(move()), this, SLOT(on_move()));
 
-  points[0] = QPoint(0, 0);
-  points[1] = QPoint(0, 1);
-  points[2] = QPoint(0, 2);
-  points[3] = QPoint(0, 3);
-  points[5] = END_OF_POINTS;
-
-  pSnakeGame->setSnake(points);
-
-  generateNewFeed();
+  cells.append(SnakeCell(this, 0, 0, "R"));
+  cells.append(SnakeCell(this, 0, 1, "R"));
+  cells.append(SnakeCell(this, -1, -1, "R"));
 }
 
 SnakeGraphics::~SnakeGraphics() {
@@ -29,69 +51,31 @@ SnakeGraphics::~SnakeGraphics() {
   timer->stopTimer();
 }
 
-bool SnakeGraphics::newRandomInSnake(int x, int y){
-  QList<QPoint> selectedPoints = pSnakeGame->getSnake();
-  for(int i=0; selectedPoints[i] != END_OF_POINTS; i++){
-    if((selectedPoints[i].x() == x) && (selectedPoints[i].y() == y)) return true;
-  }
-  return false;
-}
-
-void SnakeGraphics::generateNewFeed(){
-  QRandomGenerator *rand = new QRandomGenerator();
-
-  QPoint dimension = pSnakeGame->getScreenDimensions();
-
-  int square_h = dimension.x() / DIM;
-  int square_w = dimension.y() / DIM;
-
-  qDebug() << square_h << square_w;
-
-  int new_x = rand->bounded(0,square_h);
-  int new_y = rand->bounded(0,square_w);
-
-  while(newRandomInSnake(new_x, new_y)){
-    int new_x = rand->bounded(0,square_h);
-    int new_y = rand->bounded(0,square_w);
-  }
-
-  qDebug() << new_x << new_y;
-
-  pSnakeGame->setFeed(QPoint(new_x, new_y));
-}
 // SLOTS
 
 void SnakeGraphics::on_move() {
-  qDebug() << "move";
   QPoint newPoints[100];
-  QList<QPoint> selectedPoints = pSnakeGame->getSnake();
+  int delta_x, delta_y, x_pos, y_pos, x_to_del, y_to_del;
 
-  int delta_x = 0;
-  int delta_y = 0;
-  int x_pos,y_pos;
+  delta_x = 0;
+  delta_y = 0;
+
+  x_to_del = cells.first().at(0);
+  y_to_del = cells.first().at(1);
 
   // Recalculating points...
-  if(dir == "T"){
+  if (dir == "T") {
     delta_x = 1;
-  }
-  else if(dir == "B"){
+  } else if (dir == "B") {
     delta_x = -1;
-  }
-  else if(dir == "R"){
+  } else if (dir == "R") {
     delta_y = 1;
-  }
-  else{
+  } else {
     delta_y = -1;
   }
 
-  int i = 1;
-  while(selectedPoints.at(i) != END_OF_POINTS){
-    x_pos = selectedPoints.at(i).x();
-    y_pos = selectedPoints.at(i).y();
-    newPoints[i] = QPoint((x_pos+delta_x),(y_pos+delta_y));
-    i++;
+  for (int i = 0; !isLatestCell(cells.at(i)); i++) {
   }
-  newPoints[++i] = END_OF_POINTS;
-
-  pSnakeGame->setSnake(newPoints);
 }
+
+bool SnakeGraphics::isLatestCell(SnakeCell cell) { return cell.at(0) == -1; }

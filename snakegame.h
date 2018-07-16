@@ -20,12 +20,10 @@ class SnakeGame : public QWidget {
   explicit SnakeGame(QWidget *parent = nullptr);
   Ui::SnakeGame *ui;
   ~SnakeGame();
-  void setSnake(QPoint *list);
-  QList<QPoint> getSnake();
-  void setCellSelected(QPoint cell, bool selected);
   void setFeed(QPoint point);
-  QPoint getFeed();
+  void setCellSelected(QPoint cell, bool selected);
   QPoint getScreenDimensions();
+
 
  private slots:
   void on_back_b_clicked();

@@ -9,6 +9,11 @@
 SnakeGame::SnakeGame(QWidget* parent) : QWidget(parent), ui(new Ui::SnakeGame) {
   ui->setupUi(this);
   tableInit();
+  QPoint points[40];
+
+  setCellSelected(QPoint(0,0), true);
+  setCellSelected(QPoint(0,1), true);
+
 }
 
 SnakeGame::~SnakeGame() { delete ui; }
@@ -44,43 +49,25 @@ void SnakeGame::tableInit() {
   // Grid on and set disable the QTable to can't select any cell
   this->ui->fieldsTable->setShowGrid(true);
   this->ui->fieldsTable->setEnabled(false);
-}
 
-QList<QPoint> SnakeGame::getSnake() {
-  QList<QPoint> points;
-  int a = 0;
-  for (int i = 0; i < square_h; i++) {
-    for (int j = 0; j < square_w; j++) {
-      if (this->ui->fieldsTable->item(i, j)->backgroundColor() ==
-          QColor(Qt::GlobalColor::red)) {
-        if ((feed.x() != i) && (feed.y() != j)) points.append(QPoint(i, j));
-      }
+  for (i = 0; i < square_h; i++) {
+    for (j = 0; j < square_w; j++) {
+      this->ui->fieldsTable->item(i,j)->setBackgroundColor(Qt::GlobalColor::white);
     }
   }
-  points.append(END_OF_POINTS);
-  /*
-  for (int i = 0; points[i] != END_OF_POINTS; i++) {
-    qDebug() << points[i];
-  }
-  */
-  return points;
-}
 
-void SnakeGame::setSnake(QPoint* list) {
-  int i = 0;
-  while (list[i] != END_OF_POINTS) {
-    setCellSelected(list[i], true);
-    i++;
-  }
 }
 
 void SnakeGame::setCellSelected(QPoint cell, bool selected) {
-  if (selected)
+  if (selected){
     this->ui->fieldsTable->item(cell.rx(), cell.ry())
         ->setBackgroundColor(QColor(Qt::GlobalColor::red));
-  else
+  }
+  else {
+    qDebug() << "setting white" << cell;
     this->ui->fieldsTable->item(cell.rx(), cell.ry())
         ->setBackgroundColor(QColor(Qt::GlobalColor::white));
+  }
 }
 
 void SnakeGame::setFeed(QPoint point) {
@@ -88,8 +75,6 @@ void SnakeGame::setFeed(QPoint point) {
   this->feed = point;
   setCellSelected(point, true);
 }
-
-QPoint SnakeGame::getFeed() { return this->feed; }
 
 QPoint SnakeGame::getScreenDimensions() {
   return QPoint(this->width(), this->height());
