@@ -23,6 +23,8 @@ class SnakeGame : public QWidget {
   void setFeed(QPoint point);
   void setCellSelected(QPoint cell, bool selected);
   QPoint getScreenDimensions();
+  int getVerticalSquares();
+  int getHorizontalSquares();
 
 
  private slots:

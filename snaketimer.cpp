@@ -1,6 +1,6 @@
 #include "snaketimer.h"
 
-#define FIRST_DELAY 1200
+#define FIRST_DELAY 500
 
 SnakeTimer::SnakeTimer(QObject *parent) : QObject(parent)
 {

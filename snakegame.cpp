@@ -61,14 +61,12 @@ void SnakeGame::setCellSelected(QPoint cell, bool selected) {
         ->setBackgroundColor(QColor(Qt::GlobalColor::red));
   }
   else {
-    qDebug() << "setting white" << cell;
     this->ui->fieldsTable->item(cell.rx(), cell.ry())
         ->setBackgroundColor(QColor(Qt::GlobalColor::white));
   }
 }
 
 void SnakeGame::setFeed(QPoint point) {
-  qDebug() << "setFeed" << point;
   this->feed = point;
   setCellSelected(point, true);
 }
@@ -76,6 +74,10 @@ void SnakeGame::setFeed(QPoint point) {
 QPoint SnakeGame::getScreenDimensions() {
   return QPoint(this->width(), this->height());
 }
+
+int SnakeGame::getHorizontalSquares(){ return this->square_h; }
+
+int SnakeGame::getVerticalSquares(){ return this->square_w; }
 
 // SLOTS
 void SnakeGame::on_back_b_clicked() { delete this; }

@@ -26,7 +26,7 @@ QPoint Vertix::getPoint() { return QPoint(this->x, this->y); }
 SnakeCell::SnakeCell(QWidget *parent, int pos_x, int pos_y, QString dir) {
   this->x = pos_x;
   this->y = pos_y;
-  this->dir = dir;
+  this->dir = dir; 
 }
 
 QPoint SnakeCell::getPoint() { return QPoint(this->x, this->y); }
@@ -38,6 +38,8 @@ SnakeCell::~SnakeCell() { delete this; }
 void SnakeCell::generateNewValues() {
   int delta_x = 0;
   int delta_y = 0;
+  int maxH = SnakeGame().getHorizontalSquares();
+  int maxV = SnakeGame().getVerticalSquares();
 
   // Recalculating points...
   if (this->dir == "T") {
@@ -50,8 +52,21 @@ void SnakeCell::generateNewValues() {
     delta_y = -1;
   }
 
-  this->x = this->x + delta_x;
-  this->y = this->y + delta_y;
+  qDebug() << maxH << maxV;
+  qDebug() << "new:" << this->x+delta_x << this->y+delta_y;
+
+  if((this->x+delta_x) >= maxH){
+    this->y = this->y + delta_y;
+    this->x = 0;
+  }
+  else if((this->y+delta_y) >= maxV){
+    this->x = this->x + delta_x;
+    this->y = 0;
+  }
+  else{
+    this->x = this->x + delta_x;
+    this->y = this->y + delta_y;
+  }
 }
 
 void SnakeCell::changeDirection(QString dir) { this->dir = dir; }
@@ -64,14 +79,17 @@ SnakeGraphics::SnakeGraphics(QWidget *parent) : QWidget(parent) {
   timer->startTimer();
   QObject::connect(timer, SIGNAL(move()), this, SLOT(on_move()));
 
-  pSnakeGame->setCellSelected(QPoint(0,0), true);
-  pSnakeGame->setCellSelected(QPoint(0,1), true);
-  pSnakeGame->setCellSelected(QPoint(0,2), true);
+  pSnakeGame->setCellSelected(QPoint(0, 0), true);
+  pSnakeGame->setCellSelected(QPoint(0, 1), true);
+  pSnakeGame->setCellSelected(QPoint(0, 2), true);
 
   cells.append(new SnakeCell(this, 0, 0, "R"));
   cells.append(new SnakeCell(this, 0, 1, "R"));
   cells.append(new SnakeCell(this, 0, 2, "R"));
   cells.append(new SnakeCell(this, -1, -1, "R"));
+
+  square_v = pSnakeGame->getVerticalSquares();
+  square_w = pSnakeGame->getHorizontalSquares();
 }
 
 SnakeGraphics::~SnakeGraphics() {
@@ -89,10 +107,8 @@ void SnakeGraphics::on_move() {
   Vertix *v;
 
   to_delete = cells.first()->getPoint();
-  qDebug() << "toDelete" << to_delete;
 
   for (int i = 0; !isLatestCell(cells.at(i)); i++) {
-    qDebug() << i;
     c = cells.at(i);
     c->generateNewValues();
     for (int j = 0; j < vertixs.size(); j++) {
@@ -103,14 +119,14 @@ void SnakeGraphics::on_move() {
             v->getDirection());  // Change the direction of cell in vertix
     }
   }
-  qDebug() << "out of for";
 
   pSnakeGame->setCellSelected(to_delete, false);
-  qDebug() << "set false";
   for (int i = 0; !isLatestCell(cells.at(i)); i++) {
     c = cells.at(i);
     pSnakeGame->setCellSelected(c->getPoint(), true);
   }
 }
 
-bool SnakeGraphics::isLatestCell(SnakeCell *cell) { return cell->getPoint().x() == -1; }
+bool SnakeGraphics::isLatestCell(SnakeCell *cell) {
+  return cell->getPoint().x() == -1;
+}

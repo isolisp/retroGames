@@ -45,6 +45,8 @@ class SnakeGraphics : public QWidget {
  public:
   explicit SnakeGraphics(QWidget* parent = nullptr);
   ~SnakeGraphics();
+  int square_v;
+  int square_w;
 
  private slots:
   void on_move();
